@@ -519,7 +519,7 @@ void inotify_ignored_and_remove_idr(struct fsnotify_mark *fsn_mark,
 	struct fsnotify_event *ignored_event, *notify_event;
 	struct inotify_event_private_data *event_priv;
 	struct fsnotify_event_private_data *fsn_event_priv;
-	int ret;
+	int ret; // TODO not used
 
 	ignored_event = fsnotify_create_event(NULL, FS_IN_IGNORED, NULL,
 					      FSNOTIFY_EVENT_NONE, NULL, 0,
@@ -541,7 +541,7 @@ void inotify_ignored_and_remove_idr(struct fsnotify_mark *fsn_mark,
 	notify_event = fsnotify_add_notify_event(group, ignored_event, fsn_event_priv, NULL);
 	if (notify_event) {
 		if (IS_ERR(notify_event))
-			ret = PTR_ERR(notify_event);
+                  ret = PTR_ERR(notify_event);
 		else
 			fsnotify_put_event(notify_event);
 		inotify_free_event_priv(fsn_event_priv);

@@ -1756,7 +1756,7 @@ int afs_fs_get_volume_status(struct afs_server *server,
 static int afs_deliver_fs_xxxx_lock(struct afs_call *call,
 				    struct sk_buff *skb, bool last)
 {
-	const __be32 *bp;
+  //	const __be32 *bp;
 
 	_enter("{%u},{%u},%d", call->unmarshall, skb->len, last);
 
@@ -1768,7 +1768,7 @@ static int afs_deliver_fs_xxxx_lock(struct afs_call *call,
 		return -EBADMSG;
 
 	/* unmarshall the reply once we've received all of it */
-	bp = call->buffer;
+	//bp = call->buffer; //TODO compiler says it is not used, bp so maybe it is a bug?
 	/* xdr_decode_AFSVolSync(&bp, call->replyX); */
 
 	_leave(" = 0 [done]");

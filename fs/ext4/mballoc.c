@@ -2846,7 +2846,8 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
 {
 	int bsbits, max;
 	ext4_lblk_t end;
-	loff_t size, orig_size, start_off;
+	loff_t size, start_off;
+        //	loff_t size, orig_size, start_off;
 	ext4_lblk_t start;
 	struct ext4_inode_info *ei = EXT4_I(ac->ac_inode);
 	struct ext4_prealloc_space *pa;
@@ -2878,7 +2879,7 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
 	size = size << bsbits;
 	if (size < i_size_read(ac->ac_inode))
 		size = i_size_read(ac->ac_inode);
-	orig_size = size;
+	//orig_size = size;
 
 	/* max size of free chunks */
 	max = 2 << bsbits;

@@ -667,13 +667,13 @@ void bio_integrity_trim(struct bio *bio, unsigned int offset,
 {
 	struct bio_integrity_payload *bip = bio->bi_integrity;
 	struct blk_integrity *bi = bdev_get_integrity(bio->bi_bdev);
-	unsigned int nr_sectors;
+        //	unsigned int nr_sectors;
 
 	BUG_ON(bip == NULL);
 	BUG_ON(bi == NULL);
 	BUG_ON(!bio_flagged(bio, BIO_CLONED));
 
-	nr_sectors = bio_integrity_hw_sectors(bi, sectors);
+        //	nr_sectors = bio_integrity_hw_sectors(bi, sectors);
 	bip->bip_sector = bip->bip_sector + offset;
 	bio_integrity_mark_head(bip, offset * bi->tuple_size);
 	bio_integrity_mark_tail(bip, sectors * bi->tuple_size);

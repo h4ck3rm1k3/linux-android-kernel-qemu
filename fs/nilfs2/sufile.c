@@ -272,7 +272,8 @@ int nilfs_sufile_alloc(struct inode *sufile, __u64 *segnump)
 	size_t susz = NILFS_MDT(sufile)->mi_entry_size;
 	__u64 segnum, maxsegnum, last_alloc;
 	void *kaddr;
-	unsigned long nsegments, ncleansegs, nsus;
+        //	unsigned long nsegments, ncleansegs, nsus;
+	unsigned long nsegments, nsus;
 	int ret, i, j;
 
 	down_write(&NILFS_MDT(sufile)->mi_sem);
@@ -282,7 +283,7 @@ int nilfs_sufile_alloc(struct inode *sufile, __u64 *segnump)
 		goto out_sem;
 	kaddr = kmap_atomic(header_bh->b_page, KM_USER0);
 	header = kaddr + bh_offset(header_bh);
-	ncleansegs = le64_to_cpu(header->sh_ncleansegs);
+	//ncleansegs = le64_to_cpu(header->sh_ncleansegs);
 	last_alloc = le64_to_cpu(header->sh_last_alloc);
 	kunmap_atomic(kaddr, KM_USER0);
 

@@ -906,7 +906,7 @@ int gfs2_logd(void *data)
 	struct gfs2_sbd *sdp = data;
 	unsigned long t = 1;
 	DEFINE_WAIT(wait);
-	unsigned preflush;
+      	unsigned preflush; // todo it is used
 
 	while (!kthread_should_stop()) {
 

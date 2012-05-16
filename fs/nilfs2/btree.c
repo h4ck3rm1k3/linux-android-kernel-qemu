@@ -851,8 +851,8 @@ static void nilfs_btree_split(struct nilfs_bmap *btree,
 			      int level, __u64 *keyp, __u64 *ptrp)
 {
 	struct nilfs_btree_node *node, *right;
-	__u64 newkey;
-	__u64 newptr;
+	//__u64 newkey;
+	//__u64 newptr;
 	int nchildren, n, move, ncblk;
 
 	node = nilfs_btree_get_nonroot_node(path, level);
@@ -874,8 +874,8 @@ static void nilfs_btree_split(struct nilfs_bmap *btree,
 	if (!buffer_dirty(path[level].bp_sib_bh))
 		nilfs_btnode_mark_dirty(path[level].bp_sib_bh);
 
-	newkey = nilfs_btree_node_get_key(right, 0);
-	newptr = path[level].bp_newreq.bpr_ptr;
+	//newkey = nilfs_btree_node_get_key(right, 0);
+	//newptr = path[level].bp_newreq.bpr_ptr;
 
 	if (move) {
 		path[level].bp_index -= nilfs_btree_node_get_nchildren(node);

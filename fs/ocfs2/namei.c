@@ -2229,7 +2229,7 @@ int ocfs2_create_inode_in_orphan(struct inode *dir,
 	struct inode *inode = NULL;
 	struct inode *orphan_dir = NULL;
 	struct ocfs2_super *osb = OCFS2_SB(dir->i_sb);
-	struct ocfs2_dinode *di = NULL;
+        //	struct ocfs2_dinode *di = NULL;
 	handle_t *handle = NULL;
 	char orphan_name[OCFS2_ORPHAN_NAMELEN + 1];
 	struct buffer_head *parent_di_bh = NULL;
@@ -2294,7 +2294,7 @@ int ocfs2_create_inode_in_orphan(struct inode *dir,
 		goto leave;
 	}
 
-	di = (struct ocfs2_dinode *)new_di_bh->b_data;
+	//di = (struct ocfs2_dinode *)new_di_bh->b_data;
 	status = ocfs2_orphan_add(osb, handle, inode, new_di_bh, orphan_name,
 				  &orphan_insert, orphan_dir);
 	if (status < 0) {

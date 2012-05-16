@@ -1283,8 +1283,8 @@ static int cifs_partialpagewrite(struct page *page, unsigned from, unsigned to)
 	char *write_data;
 	int rc = -EFAULT;
 	int bytes_written = 0;
-	struct cifs_sb_info *cifs_sb;
-	struct cifsTconInfo *pTcon;
+        //	struct cifs_sb_info *cifs_sb;
+        //	struct cifsTconInfo *pTcon;
 	struct inode *inode;
 	struct cifsFileInfo *open_file;
 
@@ -1292,8 +1292,8 @@ static int cifs_partialpagewrite(struct page *page, unsigned from, unsigned to)
 		return -EFAULT;
 
 	inode = page->mapping->host;
-	cifs_sb = CIFS_SB(inode->i_sb);
-	pTcon = cifs_sb->tcon;
+	//cifs_sb = CIFS_SB(inode->i_sb);
+	//pTcon = cifs_sb->tcon;
 
 	offset += (loff_t)from;
 	write_data = kmap(page);

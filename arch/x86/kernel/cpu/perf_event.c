@@ -964,11 +964,11 @@ static void x86_pmu_enable_event(struct perf_event *event)
 static int x86_pmu_enable(struct perf_event *event)
 {
 	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
-	struct hw_perf_event *hwc;
+        //	struct hw_perf_event *hwc;
 	int assign[X86_PMC_IDX_MAX];
 	int n, n0, ret;
 
-	hwc = &event->hw;
+        //	hwc = &event->hw;
 
 	n0 = cpuc->n_events;
 	n = collect_events(cpuc, event, false);
@@ -1134,7 +1134,7 @@ static int x86_pmu_handle_irq(struct pt_regs *regs)
 	struct perf_sample_data data;
 	struct cpu_hw_events *cpuc;
 	struct perf_event *event;
-	struct hw_perf_event *hwc;
+        //	struct hw_perf_event *hwc;
 	int idx, handled = 0;
 	u64 val;
 
@@ -1155,7 +1155,7 @@ static int x86_pmu_handle_irq(struct pt_regs *regs)
 		}
 
 		event = cpuc->events[idx];
-		hwc = &event->hw;
+		//hwc = &event->hw;
 
 		val = x86_perf_event_update(event);
 		if (val & (1ULL << (x86_pmu.cntval_bits - 1)))

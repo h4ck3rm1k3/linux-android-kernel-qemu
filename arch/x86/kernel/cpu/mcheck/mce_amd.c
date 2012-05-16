@@ -319,7 +319,8 @@ static void local_error_count_handler(void *_tbcc)
 {
 	struct threshold_block_cross_cpu *tbcc = _tbcc;
 	struct threshold_block *b = tbcc->tb;
-	u32 low, high;
+        u32 low; // low not used
+	u32 high;
 
 	rdmsr(b->address, low, high);
 	tbcc->retval = (high & 0xFFF) - (THRESHOLD_MAX - b->threshold_limit);

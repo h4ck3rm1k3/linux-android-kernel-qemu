@@ -51,8 +51,8 @@ struct ceph_mdsmap *ceph_mdsmap_decode(void **p, void *end)
 	struct ceph_mdsmap *m;
 	const void *start = *p;
 	int i, j, n;
-	int err = -EINVAL;
-	u16 version;
+	//int err = -EINVAL;
+	u16 version; // COMPILER BUG?
 
 	m = kzalloc(sizeof(*m), GFP_NOFS);
 	if (m == NULL)
@@ -80,7 +80,7 @@ struct ceph_mdsmap *ceph_mdsmap_decode(void **p, void *end)
 		u64 global_id;
 		u32 namelen;
 		s32 mds, inc, state;
-		u64 state_seq;
+                //	u64 state_seq;
 		u8 infoversion;
 		struct ceph_entity_addr addr;
 		u32 num_export_targets;
@@ -101,7 +101,7 @@ struct ceph_mdsmap *ceph_mdsmap_decode(void **p, void *end)
 		mds = ceph_decode_32(p);
 		inc = ceph_decode_32(p);
 		state = ceph_decode_32(p);
-		state_seq = ceph_decode_64(p);
+                //	state_seq = ceph_decode_64(p);
 		ceph_decode_copy(p, &addr, sizeof(addr));
 		ceph_decode_addr(&addr);
 		ceph_decode_copy(p, &laggy_since, sizeof(laggy_since));
@@ -156,7 +156,7 @@ struct ceph_mdsmap *ceph_mdsmap_decode(void **p, void *end)
 	return m;
 
 badmem:
-	err = -ENOMEM;
+        //	err = -ENOMEM;
 bad:
 	pr_err("corrupt mdsmap\n");
 	print_hex_dump(KERN_DEBUG, "mdsmap: ",

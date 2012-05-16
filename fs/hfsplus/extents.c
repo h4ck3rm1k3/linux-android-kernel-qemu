@@ -175,12 +175,12 @@ int hfsplus_get_block(struct inode *inode, sector_t iblock,
 	struct super_block *sb;
 	int res = -EIO;
 	u32 ablock, dblock, mask;
-	int shift;
+	//int shift;
 
 	sb = inode->i_sb;
 
 	/* Convert inode block to disk allocation block */
-	shift = HFSPLUS_SB(sb).alloc_blksz_shift - sb->s_blocksize_bits;
+	//shift = HFSPLUS_SB(sb).alloc_blksz_shift - sb->s_blocksize_bits;
 	ablock = iblock >> HFSPLUS_SB(sb).fs_shift;
 
 	if (iblock >= HFSPLUS_I(inode).fs_blocks) {

@@ -27,6 +27,12 @@
 #include <asm/uaccess.h>
 #include <asm/cacheflush.h>
 
+// forward copied from outside
+extern void dmac_flush_range(const void *, const void *);
+// derived
+extern void * ioremap_cached(const void *data, size_t size);
+
+
 #define PMEM_MAX_DEVICES 10
 #define PMEM_MAX_ORDER 128
 #define PMEM_MIN_ALLOC PAGE_SIZE
@@ -494,7 +500,7 @@ static int pmem_unmap_pfn_range(int id, struct vm_area_struct *vma,
 				struct pmem_data *data, unsigned long offset,
 				unsigned long len)
 {
-	int garbage_pages;
+  //int garbage_pages;
 	DLOG("unmap offset %lx len %lx\n", offset, len);
 
 	BUG_ON(!PMEM_IS_PAGE_ALIGNED(len));
@@ -779,6 +785,7 @@ void put_pmem_file(struct file *file)
 #endif
 	fput(file);
 }
+
 
 void flush_pmem_file(struct file *file, unsigned long offset, unsigned long len)
 {
@@ -1223,7 +1230,9 @@ static struct miscdevice pmem_dev = {
 	.name = "pmem",
 	.fops = &pmem_fops,
 };
-#endif
+#endi
+
+
 
 int pmem_setup(struct android_pmem_platform_data *pdata,
 	       long (*ioctl)(struct file *, unsigned int, unsigned long),

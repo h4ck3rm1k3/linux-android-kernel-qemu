@@ -549,9 +549,9 @@ static void c1e_idle(void)
 		return;
 
 	if (!c1e_detected) {
-		u32 lo, hi;
-
-		rdmsr(MSR_K8_INT_PENDING_MSG, lo, hi);
+          u32 lo , hi; // TODO : hi set but not used
+          
+          rdmsr(MSR_K8_INT_PENDING_MSG, lo, hi);
 
 		if (lo & K8_INTP_C1E_ACTIVE_MASK) {
 			c1e_detected = true;

@@ -1122,10 +1122,10 @@ static struct dentry *__lookup_hash(struct qstr *name,
 		struct dentry *base, struct nameidata *nd)
 {
 	struct dentry *dentry;
-	struct inode *inode;
+        //	struct inode *inode; not used
 	int err;
 
-	inode = base->d_inode;
+        //	inode = base->d_inode;
 
 	/*
 	 * See if the low-level filesystem might want
@@ -1139,7 +1139,7 @@ static struct dentry *__lookup_hash(struct qstr *name,
 	}
 
 	/*
-	 * Don't bother with __d_lookup: callers are for creat as
+	 * Don't bother with __d_lookup: callers are for create as
 	 * well as unlink, so a lot of the time it would cost
 	 * a double lookup.
 	 */

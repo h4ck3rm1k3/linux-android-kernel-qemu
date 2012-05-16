@@ -410,7 +410,7 @@ EXPORT_SYMBOL(__fscache_update_cookie);
  */
 void __fscache_relinquish_cookie(struct fscache_cookie *cookie, int retire)
 {
-	struct fscache_cache *cache;
+  //	struct fscache_cache *cache;
 	struct fscache_object *object;
 	unsigned long event;
 
@@ -456,7 +456,7 @@ void __fscache_relinquish_cookie(struct fscache_cookie *cookie, int retire)
 		spin_lock(&object->lock);
 		hlist_del_init(&object->cookie_link);
 
-		cache = object->cache;
+                //	cache = object->cache;
 		object->cookie = NULL;
 		fscache_raise_event(object, event);
 		spin_unlock(&object->lock);

@@ -159,7 +159,7 @@ static int ecryptfs_open(struct inode *inode, struct file *file)
 	struct dentry *ecryptfs_dentry = file->f_path.dentry;
 	/* Private value of ecryptfs_dentry allocated in
 	 * ecryptfs_lookup() */
-	struct dentry *lower_dentry;
+        //	struct dentry *lower_dentry;
 	struct ecryptfs_file_info *file_info;
 
 	mount_crypt_stat = &ecryptfs_superblock_to_private(
@@ -182,7 +182,7 @@ static int ecryptfs_open(struct inode *inode, struct file *file)
 		rc = -ENOMEM;
 		goto out;
 	}
-	lower_dentry = ecryptfs_dentry_to_lower(ecryptfs_dentry);
+	//lower_dentry = ecryptfs_dentry_to_lower(ecryptfs_dentry);
 	crypt_stat = &ecryptfs_inode_to_private(inode)->crypt_stat;
 	mutex_lock(&crypt_stat->cs_mutex);
 	if (!(crypt_stat->flags & ECRYPTFS_POLICY_APPLIED)) {

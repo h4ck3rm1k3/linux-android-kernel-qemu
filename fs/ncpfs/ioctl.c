@@ -639,9 +639,9 @@ outrel:
 			struct ncp_objectname_ioctl user;
 			void* newname;
 			void* oldname;
-			size_t oldnamelen;
+                        //			size_t oldnamelen;
 			void* oldprivate;
-			size_t oldprivatelen;
+                        //	size_t oldprivatelen;
 
 #ifdef CONFIG_COMPAT
 			if (cmd == NCP_IOC_SETOBJECTNAME_32) {
@@ -670,9 +670,9 @@ outrel:
 			/* maybe that kfree can sleep so do that this way */
 			/* it is at least more SMP friendly (in future...) */
 			oldname = server->auth.object_name;
-			oldnamelen = server->auth.object_name_len;
+                        //		oldnamelen = server->auth.object_name_len;
 			oldprivate = server->priv.data;
-			oldprivatelen = server->priv.len;
+                        //		oldprivatelen = server->priv.len;
 			server->auth.auth_type = user.auth_type;
 			server->auth.object_name_len = user.object_name_len;
 			server->auth.object_name = newname;
@@ -739,7 +739,7 @@ outrel:
 			struct ncp_privatedata_ioctl user;
 			void* new;
 			void* old;
-			size_t oldlen;
+                        //			size_t oldlen;
 
 #ifdef CONFIG_COMPAT
 			if (cmd == NCP_IOC_SETPRIVATEDATA_32) {
@@ -764,7 +764,7 @@ outrel:
 			}
 			/* enter critical section */
 			old = server->priv.data;
-			oldlen = server->priv.len;
+                        //		oldlen = server->priv.len;
 			server->priv.len = user.len;
 			server->priv.data = new;
 			/* leave critical section */

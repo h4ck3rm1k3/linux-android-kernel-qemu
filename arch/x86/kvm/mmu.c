@@ -2108,11 +2108,12 @@ static void kvm_send_hwpoison_signal(struct kvm *kvm, gfn_t gfn)
 {
 	char buf[1];
 	void __user *hva;
-	int r;
+	//int r;
 
 	/* Touch the page, so send SIGBUS */
 	hva = (void __user *)gfn_to_hva(kvm, gfn);
-	r = copy_from_user(buf, hva, 1);
+	//r = 
+        copy_from_user(buf, hva, 1);
 }
 
 static int kvm_handle_bad_page(struct kvm *kvm, gfn_t gfn, pfn_t pfn)

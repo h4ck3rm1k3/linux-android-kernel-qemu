@@ -750,7 +750,8 @@ hotfix_primary_boot_sector:
  */
 static bool parse_ntfs_boot_sector(ntfs_volume *vol, const NTFS_BOOT_SECTOR *b)
 {
-	unsigned int sectors_per_cluster_bits, nr_hidden_sects;
+  //	unsigned int sectors_per_cluster_bits, nr_hidden_sects;
+	unsigned int sectors_per_cluster_bits;
 	int clusters_per_mft_record, clusters_per_index_record;
 	s64 ll;
 
@@ -771,7 +772,7 @@ static bool parse_ntfs_boot_sector(ntfs_volume *vol, const NTFS_BOOT_SECTOR *b)
 	sectors_per_cluster_bits = ffs(b->bpb.sectors_per_cluster) - 1;
 	ntfs_debug("sectors_per_cluster_bits = 0x%x",
 			sectors_per_cluster_bits);
-	nr_hidden_sects = le32_to_cpu(b->bpb.hidden_sectors);
+	//nr_hidden_sects = le32_to_cpu(b->bpb.hidden_sectors);
 	ntfs_debug("number of hidden sectors = 0x%x", nr_hidden_sects);
 	vol->cluster_size = vol->sector_size << sectors_per_cluster_bits;
 	vol->cluster_size_mask = vol->cluster_size - 1;

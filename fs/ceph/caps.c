@@ -1072,7 +1072,7 @@ static int __send_cap(struct ceph_mds_client *mdsc, struct ceph_cap *cap,
 	struct ceph_inode_info *ci = cap->ci;
 	struct inode *inode = &ci->vfs_inode;
 	u64 cap_id = cap->cap_id;
-	int held, revoking, dropping, keep;
+	int held, revoking, /*dropping,*/ keep;
 	u64 seq, issue_seq, mseq, time_warp_seq, follows;
 	u64 size, max_size;
 	struct timespec mtime, atime;
@@ -1091,7 +1091,7 @@ static int __send_cap(struct ceph_mds_client *mdsc, struct ceph_cap *cap,
 	held = cap->issued | cap->implemented;
 	revoking = cap->implemented & ~cap->issued;
 	retain &= ~revoking;
-	dropping = cap->issued & ~retain;
+	//dropping = cap->issued & ~retain;
 
 	dout("__send_cap %p cap %p session %p %s -> %s (revoking %s)\n",
 	     inode, cap, cap->session,
@@ -2293,7 +2293,7 @@ static void handle_cap_grant(struct inode *inode, struct ceph_mds_caps *grant,
 	int check_caps = 0;
 	int wake = 0;
 	int writeback = 0;
-	int revoked_rdcache = 0;
+	//int revoked_rdcache = 0;
 	int queue_invalidate = 0;
 
 	dout("handle_cap_grant inode %p cap %p mds%d seq %u/%u %s\n",
@@ -2310,7 +2310,7 @@ static void handle_cap_grant(struct inode *inode, struct ceph_mds_caps *grant,
 	    (newcaps & CEPH_CAP_FILE_LAZYIO) == 0 &&
 	    !ci->i_wrbuffer_ref) {
 		if (try_nonblocking_invalidate(inode) == 0) {
-			revoked_rdcache = 1;
+                  //		revoked_rdcache = 1;
 		} else {
 			/* there were locked pages.. invalidate later
 			   in a separate thread. */
@@ -2722,12 +2722,11 @@ void ceph_handle_caps(struct ceph_mds_session *session,
 	u32 seq, mseq;
 	struct ceph_vino vino;
 	u64 cap_id;
-	u64 size, max_size;
+	//u64 size;//, max_size;
 	u64 tid;
 	void *snaptrace;
 	size_t snaptrace_len;
-	void *flock;
-	u32 flock_len;
+        u32 flock_len;// TODO:set but not used?	
 	int open_target_sessions = 0;
 
 	dout("handle_caps from mds%d\n", mds);
@@ -2743,8 +2742,8 @@ void ceph_handle_caps(struct ceph_mds_session *session,
 	cap_id = le64_to_cpu(h->cap_id);
 	seq = le32_to_cpu(h->seq);
 	mseq = le32_to_cpu(h->migrate_seq);
-	size = le64_to_cpu(h->size);
-	max_size = le64_to_cpu(h->max_size);
+	//size = le64_to_cpu(h->size);
+	//max_size = le64_to_cpu(h->max_size);
 
 	snaptrace = h + 1;
 	snaptrace_len = le32_to_cpu(h->snap_trace_len);
@@ -2754,11 +2753,13 @@ void ceph_handle_caps(struct ceph_mds_session *session,
 
 		p = snaptrace + snaptrace_len;
 		end = msg->front.iov_base + msg->front.iov_len;
+                //                void *flock;// set but not used?
+
 		ceph_decode_32_safe(&p, end, flock_len, bad);
-		flock = p;
+                //	flock = p;
 	} else {
-		flock = NULL;
-		flock_len = 0;
+          //flock = NULL;
+          //	flock_len = 0;
 	}
 
 	mutex_lock(&session->s_mutex);

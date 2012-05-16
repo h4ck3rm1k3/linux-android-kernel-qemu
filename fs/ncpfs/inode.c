@@ -357,7 +357,7 @@ static int ncp_parse_options(struct ncp_mount_data_kernel *data, char *options) 
 	int optval;
 	char *optarg;
 	unsigned long optint;
-	int version = 0;
+	//int version = 0;
 	int ret;
 
 	data->flags = 0;
@@ -418,7 +418,7 @@ static int ncp_parse_options(struct ncp_mount_data_kernel *data, char *options) 
 					goto err;
 				if (optint > NCP_MOUNT_VERSION_V5)
 					goto err;
-				version = optint;
+                                //version = optint;
 				break;
 			
 		}

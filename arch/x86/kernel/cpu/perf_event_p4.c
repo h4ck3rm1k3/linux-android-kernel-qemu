@@ -926,7 +926,8 @@ static __initconst const struct x86_pmu p4_pmu = {
 
 static __init int p4_pmu_init(void)
 {
-	unsigned int low, high;
+  unsigned int low;
+  unsigned int  high;// not used
 
 	/* If we get stripped -- indexig fails */
 	BUILD_BUG_ON(ARCH_P4_MAX_CCCR > X86_PMC_MAX_GENERIC);

@@ -996,7 +996,7 @@ void ceph_osdc_handle_map(struct ceph_osd_client *osdc, struct ceph_msg *msg)
 	u32 nr_maps, maplen;
 	u32 epoch;
 	struct ceph_osdmap *newmap = NULL, *oldmap;
-	int err;
+	//int err;
 	struct ceph_fsid fsid;
 
 	dout("handle_map have %u\n", osdc->osdmap ? osdc->osdmap->epoch : 0);
@@ -1027,7 +1027,7 @@ void ceph_osdc_handle_map(struct ceph_osd_client *osdc, struct ceph_msg *msg)
 							  osdc->osdmap,
 							  osdc->client->msgr);
 			if (IS_ERR(newmap)) {
-				err = PTR_ERR(newmap);
+                          //			err = PTR_ERR(newmap);
 				goto bad;
 			}
 			BUG_ON(!newmap);
@@ -1064,7 +1064,7 @@ void ceph_osdc_handle_map(struct ceph_osd_client *osdc, struct ceph_msg *msg)
 			dout("taking full map %u len %d\n", epoch, maplen);
 			newmap = osdmap_decode(&p, p+maplen);
 			if (IS_ERR(newmap)) {
-				err = PTR_ERR(newmap);
+                          //			err = PTR_ERR(newmap);
 				goto bad;
 			}
 			BUG_ON(!newmap);

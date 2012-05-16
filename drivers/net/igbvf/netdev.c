@@ -1356,7 +1356,8 @@ static void igbvf_configure_rx(struct igbvf_adapter *adapter)
 	struct e1000_hw *hw = &adapter->hw;
 	struct igbvf_ring *rx_ring = adapter->rx_ring;
 	u64 rdba;
-	u32 rdlen, rxdctl;
+	//u32 rdlen, rxdctl;
+        u32 rxdctl;
 
 	/* disable receives */
 	rxdctl = er32(RXDCTL(0));
@@ -1853,7 +1854,7 @@ static void igbvf_watchdog_task(struct work_struct *work)
 
 	if (link) {
 		if (!netif_carrier_ok(netdev)) {
-			bool txb2b = 1;
+                  //obool txb2b = 1;
 
 			mac->ops.get_link_up_info(&adapter->hw,
 			                          &adapter->link_speed,

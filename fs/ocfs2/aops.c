@@ -524,7 +524,8 @@ static int ocfs2_direct_IO_get_blocks(struct inode *inode, sector_t iblock,
 				     struct buffer_head *bh_result, int create)
 {
 	int ret;
-	u64 p_blkno, inode_blocks, contig_blocks;
+        //	u64 p_blkno, inode_blocks, contig_blocks;
+	u64 p_blkno, contig_blocks;
 	unsigned int ext_flags;
 	unsigned char blocksize_bits = inode->i_sb->s_blocksize_bits;
 	unsigned long max_blocks = bh_result->b_size >> inode->i_blkbits;
@@ -533,7 +534,7 @@ static int ocfs2_direct_IO_get_blocks(struct inode *inode, sector_t iblock,
 	 * nicely aligned and of the right size, so there's no need
 	 * for us to check any of that. */
 
-	inode_blocks = ocfs2_blocks_for_bytes(inode->i_sb, i_size_read(inode));
+	//inode_blocks = ocfs2_blocks_for_bytes(inode->i_sb, i_size_read(inode));
 
 	/* This figures out the size of the next contiguous block, and
 	 * our logical offset */

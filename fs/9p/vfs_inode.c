@@ -938,7 +938,7 @@ error:
 static struct dentry *v9fs_vfs_lookup(struct inode *dir, struct dentry *dentry,
 				      struct nameidata *nameidata)
 {
-	struct super_block *sb;
+  //	struct super_block *sb;
 	struct v9fs_session_info *v9ses;
 	struct p9_fid *dfid, *fid;
 	struct inode *inode;
@@ -951,7 +951,7 @@ static struct dentry *v9fs_vfs_lookup(struct inode *dir, struct dentry *dentry,
 	if (dentry->d_name.len > NAME_MAX)
 		return ERR_PTR(-ENAMETOOLONG);
 
-	sb = dir->i_sb;
+        //	sb = dir->i_sb;
 	v9ses = v9fs_inode2v9ses(dir);
 	/* We can walk d_parent because we hold the dir->i_mutex */
 	dfid = v9fs_fid_lookup(dentry->d_parent);
@@ -1109,13 +1109,13 @@ static int
 v9fs_vfs_getattr(struct vfsmount *mnt, struct dentry *dentry,
 		 struct kstat *stat)
 {
-	int err;
+  //	int err;
 	struct v9fs_session_info *v9ses;
 	struct p9_fid *fid;
 	struct p9_wstat *st;
 
 	P9_DPRINTK(P9_DEBUG_VFS, "dentry: %p\n", dentry);
-	err = -EPERM;
+        //	err = -EPERM;
 	v9ses = v9fs_inode2v9ses(dentry->d_inode);
 	if (v9ses->cache == CACHE_LOOSE || v9ses->cache == CACHE_FSCACHE)
 		return simple_getattr(mnt, dentry, stat);
@@ -1140,13 +1140,13 @@ static int
 v9fs_vfs_getattr_dotl(struct vfsmount *mnt, struct dentry *dentry,
 		 struct kstat *stat)
 {
-	int err;
+  //	int err;
 	struct v9fs_session_info *v9ses;
 	struct p9_fid *fid;
 	struct p9_stat_dotl *st;
 
 	P9_DPRINTK(P9_DEBUG_VFS, "dentry: %p\n", dentry);
-	err = -EPERM;
+        //	err = -EPERM;
 	v9ses = v9fs_inode2v9ses(dentry->d_inode);
 	if (v9ses->cache == CACHE_LOOSE || v9ses->cache == CACHE_FSCACHE)
 		return simple_getattr(mnt, dentry, stat);
@@ -1240,7 +1240,7 @@ static int v9fs_vfs_setattr(struct dentry *dentry, struct iattr *iattr)
 static int v9fs_vfs_setattr_dotl(struct dentry *dentry, struct iattr *iattr)
 {
 	int retval;
-	struct v9fs_session_info *v9ses;
+        //	struct v9fs_session_info *v9ses;
 	struct p9_fid *fid;
 	struct p9_iattr_dotl p9attr;
 
@@ -1261,7 +1261,7 @@ static int v9fs_vfs_setattr_dotl(struct dentry *dentry, struct iattr *iattr)
 	p9attr.mtime_nsec = iattr->ia_mtime.tv_nsec;
 
 	retval = -EPERM;
-	v9ses = v9fs_inode2v9ses(dentry->d_inode);
+        //	v9ses = v9fs_inode2v9ses(dentry->d_inode);
 	fid = v9fs_fid_lookup(dentry);
 	if (IS_ERR(fid))
 		return PTR_ERR(fid);
@@ -1744,7 +1744,7 @@ v9fs_vfs_link_dotl(struct dentry *old_dentry, struct inode *dir,
 {
 	int err;
 	struct p9_fid *dfid, *oldfid;
-	char *name;
+//	char *name;
 	struct v9fs_session_info *v9ses;
 	struct dentry *dir_dentry;
 
@@ -1762,7 +1762,7 @@ v9fs_vfs_link_dotl(struct dentry *old_dentry, struct inode *dir,
 	if (IS_ERR(oldfid))
 		return PTR_ERR(oldfid);
 
-	name = (char *) dentry->d_name.name;
+        //	name = (char *) dentry->d_name.name;
 
 	err = p9_client_link(dfid, oldfid, (char *)dentry->d_name.name);
 

@@ -360,250 +360,250 @@ enum {
 	Opt_noasyncreaddir,
 };
 
-static match_table_t arg_tokens = {
-	{Opt_wsize, "wsize=%d"},
-	{Opt_rsize, "rsize=%d"},
-	{Opt_osdtimeout, "osdtimeout=%d"},
-	{Opt_osdkeepalivetimeout, "osdkeepalive=%d"},
-	{Opt_mount_timeout, "mount_timeout=%d"},
-	{Opt_osd_idle_ttl, "osd_idle_ttl=%d"},
-	{Opt_caps_wanted_delay_min, "caps_wanted_delay_min=%d"},
-	{Opt_caps_wanted_delay_max, "caps_wanted_delay_max=%d"},
-	{Opt_cap_release_safety, "cap_release_safety=%d"},
-	{Opt_readdir_max_entries, "readdir_max_entries=%d"},
-	{Opt_readdir_max_bytes, "readdir_max_bytes=%d"},
-	{Opt_congestion_kb, "write_congestion_kb=%d"},
-	/* int args above */
-	{Opt_fsid, "fsid=%s"},
-	{Opt_snapdirname, "snapdirname=%s"},
-	{Opt_name, "name=%s"},
-	{Opt_secret, "secret=%s"},
-	/* string args above */
-	{Opt_ip, "ip=%s"},
-	{Opt_noshare, "noshare"},
-	{Opt_dirstat, "dirstat"},
-	{Opt_nodirstat, "nodirstat"},
-	{Opt_rbytes, "rbytes"},
-	{Opt_norbytes, "norbytes"},
-	{Opt_nocrc, "nocrc"},
-	{Opt_noasyncreaddir, "noasyncreaddir"},
-	{-1, NULL}
-};
+/* static match_table_t arg_tokens = { */
+/* 	{Opt_wsize, "wsize=%d"}, */
+/* 	{Opt_rsize, "rsize=%d"}, */
+/* 	{Opt_osdtimeout, "osdtimeout=%d"}, */
+/* 	{Opt_osdkeepalivetimeout, "osdkeepalive=%d"}, */
+/* 	{Opt_mount_timeout, "mount_timeout=%d"}, */
+/* 	{Opt_osd_idle_ttl, "osd_idle_ttl=%d"}, */
+/* 	{Opt_caps_wanted_delay_min, "caps_wanted_delay_min=%d"}, */
+/* 	{Opt_caps_wanted_delay_max, "caps_wanted_delay_max=%d"}, */
+/* 	{Opt_cap_release_safety, "cap_release_safety=%d"}, */
+/* 	{Opt_readdir_max_entries, "readdir_max_entries=%d"}, */
+/* 	{Opt_readdir_max_bytes, "readdir_max_bytes=%d"}, */
+/* 	{Opt_congestion_kb, "write_congestion_kb=%d"}, */
+/* 	/\* int args above *\/ */
+/* 	{Opt_fsid, "fsid=%s"}, */
+/* 	{Opt_snapdirname, "snapdirname=%s"}, */
+/* 	{Opt_name, "name=%s"}, */
+/* 	{Opt_secret, "secret=%s"}, */
+/* 	/\* string args above *\/ */
+/* 	{Opt_ip, "ip=%s"}, */
+/* 	{Opt_noshare, "noshare"}, */
+/* 	{Opt_dirstat, "dirstat"}, */
+/* 	{Opt_nodirstat, "nodirstat"}, */
+/* 	{Opt_rbytes, "rbytes"}, */
+/* 	{Opt_norbytes, "norbytes"}, */
+/* 	{Opt_nocrc, "nocrc"}, */
+/* 	{Opt_noasyncreaddir, "noasyncreaddir"}, */
+/* 	{-1, NULL} */
+/* }; */
 
-static int parse_fsid(const char *str, struct ceph_fsid *fsid)
-{
-	int i = 0;
-	char tmp[3];
-	int err = -EINVAL;
-	int d;
+/* static int parse_fsid(const char *str, struct ceph_fsid *fsid) */
+/* { */
+/* 	int i = 0; */
+/* 	char tmp[3]; */
+/* 	int err = -EINVAL; */
+/* 	int d; */
 
-	dout("parse_fsid '%s'\n", str);
-	tmp[2] = 0;
-	while (*str && i < 16) {
-		if (ispunct(*str)) {
-			str++;
-			continue;
-		}
-		if (!isxdigit(str[0]) || !isxdigit(str[1]))
-			break;
-		tmp[0] = str[0];
-		tmp[1] = str[1];
-		if (sscanf(tmp, "%x", &d) < 1)
-			break;
-		fsid->fsid[i] = d & 0xff;
-		i++;
-		str += 2;
-	}
+/* 	dout("parse_fsid '%s'\n", str); */
+/* 	tmp[2] = 0; */
+/* 	while (*str && i < 16) { */
+/* 		if (ispunct(*str)) { */
+/* 			str++; */
+/* 			continue; */
+/* 		} */
+/* 		if (!isxdigit(str[0]) || !isxdigit(str[1])) */
+/* 			break; */
+/* 		tmp[0] = str[0]; */
+/* 		tmp[1] = str[1]; */
+/* 		if (sscanf(tmp, "%x", &d) < 1) */
+/* 			break; */
+/* 		fsid->fsid[i] = d & 0xff; */
+/* 		i++; */
+/* 		str += 2; */
+/* 	} */
 
-	if (i == 16)
-		err = 0;
-	dout("parse_fsid ret %d got fsid %pU", err, fsid);
-	return err;
-}
+/* 	if (i == 16) */
+/* 		err = 0; */
+/* 	dout("parse_fsid ret %d got fsid %pU", err, fsid); */
+/* 	return err; */
+/* } */
 
-static struct ceph_mount_args *parse_mount_args(int flags, char *options,
-						const char *dev_name,
-						const char **path)
-{
-	struct ceph_mount_args *args;
-	const char *c;
-	int err = -ENOMEM;
-	substring_t argstr[MAX_OPT_ARGS];
+/* static struct ceph_mount_args *parse_mount_args(int flags, char *options, */
+/* 						const char *dev_name, */
+/* 						const char **path) */
+/* { */
+/* 	struct ceph_mount_args *args; */
+/* 	const char *c; */
+/* 	int err = -ENOMEM; */
+/* 	substring_t argstr[MAX_OPT_ARGS]; */
 
-	args = kzalloc(sizeof(*args), GFP_KERNEL);
-	if (!args)
-		return ERR_PTR(-ENOMEM);
-	args->mon_addr = kcalloc(CEPH_MAX_MON, sizeof(*args->mon_addr),
-				 GFP_KERNEL);
-	if (!args->mon_addr)
-		goto out;
+/* 	args = kzalloc(sizeof(*args), GFP_KERNEL); */
+/* 	if (!args) */
+/* 		return ERR_PTR(-ENOMEM); */
+/* 	args->mon_addr = kcalloc(CEPH_MAX_MON, sizeof(*args->mon_addr), */
+/* 				 GFP_KERNEL); */
+/* 	if (!args->mon_addr) */
+/* 		goto out; */
 
-	dout("parse_mount_args %p, dev_name '%s'\n", args, dev_name);
+/* 	dout("parse_mount_args %p, dev_name '%s'\n", args, dev_name); */
 
-	/* start with defaults */
-	args->sb_flags = flags;
-	args->flags = CEPH_OPT_DEFAULT;
-	args->osd_timeout = CEPH_OSD_TIMEOUT_DEFAULT;
-	args->osd_keepalive_timeout = CEPH_OSD_KEEPALIVE_DEFAULT;
-	args->mount_timeout = CEPH_MOUNT_TIMEOUT_DEFAULT; /* seconds */
-	args->osd_idle_ttl = CEPH_OSD_IDLE_TTL_DEFAULT;   /* seconds */
-	args->caps_wanted_delay_min = CEPH_CAPS_WANTED_DELAY_MIN_DEFAULT;
-	args->caps_wanted_delay_max = CEPH_CAPS_WANTED_DELAY_MAX_DEFAULT;
-	args->rsize = CEPH_MOUNT_RSIZE_DEFAULT;
-	args->snapdir_name = kstrdup(CEPH_SNAPDIRNAME_DEFAULT, GFP_KERNEL);
-	args->cap_release_safety = CEPH_CAP_RELEASE_SAFETY_DEFAULT;
-	args->max_readdir = CEPH_MAX_READDIR_DEFAULT;
-	args->max_readdir_bytes = CEPH_MAX_READDIR_BYTES_DEFAULT;
-	args->congestion_kb = default_congestion_kb();
+/* 	/\* start with defaults *\/ */
+/* 	args->sb_flags = flags; */
+/* 	args->flags = CEPH_OPT_DEFAULT; */
+/* 	args->osd_timeout = CEPH_OSD_TIMEOUT_DEFAULT; */
+/* 	args->osd_keepalive_timeout = CEPH_OSD_KEEPALIVE_DEFAULT; */
+/* 	args->mount_timeout = CEPH_MOUNT_TIMEOUT_DEFAULT; /\* seconds *\/ */
+/* 	args->osd_idle_ttl = CEPH_OSD_IDLE_TTL_DEFAULT;   /\* seconds *\/ */
+/* 	args->caps_wanted_delay_min = CEPH_CAPS_WANTED_DELAY_MIN_DEFAULT; */
+/* 	args->caps_wanted_delay_max = CEPH_CAPS_WANTED_DELAY_MAX_DEFAULT; */
+/* 	args->rsize = CEPH_MOUNT_RSIZE_DEFAULT; */
+/* 	args->snapdir_name = kstrdup(CEPH_SNAPDIRNAME_DEFAULT, GFP_KERNEL); */
+/* 	args->cap_release_safety = CEPH_CAP_RELEASE_SAFETY_DEFAULT; */
+/* 	args->max_readdir = CEPH_MAX_READDIR_DEFAULT; */
+/* 	args->max_readdir_bytes = CEPH_MAX_READDIR_BYTES_DEFAULT; */
+/* 	args->congestion_kb = default_congestion_kb(); */
 
-	/* ip1[:port1][,ip2[:port2]...]:/subdir/in/fs */
-	err = -EINVAL;
-	if (!dev_name)
-		goto out;
-	*path = strstr(dev_name, ":/");
-	if (*path == NULL) {
-		pr_err("device name is missing path (no :/ in %s)\n",
-		       dev_name);
-		goto out;
-	}
+/* 	/\* ip1[:port1][,ip2[:port2]...]:/subdir/in/fs *\/ */
+/* 	err = -EINVAL; */
+/* 	if (!dev_name) */
+/* 		goto out; */
+/* 	*path = strstr(dev_name, ":/"); */
+/* 	if (*path == NULL) { */
+/* 		pr_err("device name is missing path (no :/ in %s)\n", */
+/* 		       dev_name); */
+/* 		goto out; */
+/* 	} */
 
-	/* get mon ip(s) */
-	err = ceph_parse_ips(dev_name, *path, args->mon_addr,
-			     CEPH_MAX_MON, &args->num_mon);
-	if (err < 0)
-		goto out;
+/* 	/\* get mon ip(s) *\/ */
+/* 	err = ceph_parse_ips(dev_name, *path, args->mon_addr, */
+/* 			     CEPH_MAX_MON, &args->num_mon); */
+/* 	if (err < 0) */
+/* 		goto out; */
 
-	/* path on server */
-	*path += 2;
-	dout("server path '%s'\n", *path);
+/* 	/\* path on server *\/ */
+/* 	*path += 2; */
+/* 	dout("server path '%s'\n", *path); */
 
-	/* parse mount options */
-	while ((c = strsep(&options, ",")) != NULL) {
-		int token, intval, ret;
-		if (!*c)
-			continue;
-		err = -EINVAL;
-		token = match_token((char *)c, arg_tokens, argstr);
-		if (token < 0) {
-			pr_err("bad mount option at '%s'\n", c);
-			goto out;
-		}
-		if (token < Opt_last_int) {
-			ret = match_int(&argstr[0], &intval);
-			if (ret < 0) {
-				pr_err("bad mount option arg (not int) "
-				       "at '%s'\n", c);
-				continue;
-			}
-			dout("got int token %d val %d\n", token, intval);
-		} else if (token > Opt_last_int && token < Opt_last_string) {
-			dout("got string token %d val %s\n", token,
-			     argstr[0].from);
-		} else {
-			dout("got token %d\n", token);
-		}
-		switch (token) {
-		case Opt_ip:
-			err = ceph_parse_ips(argstr[0].from,
-					     argstr[0].to,
-					     &args->my_addr,
-					     1, NULL);
-			if (err < 0)
-				goto out;
-			args->flags |= CEPH_OPT_MYIP;
-			break;
+/* 	/\* parse mount options *\/ */
+/* 	while ((c = strsep(&options, ",")) != NULL) { */
+/* 		int token, intval, ret; */
+/* 		if (!*c) */
+/* 			continue; */
+/* 		err = -EINVAL; */
+/* 		token = match_token((char *)c, arg_tokens, argstr); */
+/* 		if (token < 0) { */
+/* 			pr_err("bad mount option at '%s'\n", c); */
+/* 			goto out; */
+/* 		} */
+/* 		if (token < Opt_last_int) { */
+/* 			ret = match_int(&argstr[0], &intval); */
+/* 			if (ret < 0) { */
+/* 				pr_err("bad mount option arg (not int) " */
+/* 				       "at '%s'\n", c); */
+/* 				continue; */
+/* 			} */
+/* 			dout("got int token %d val %d\n", token, intval); */
+/* 		} else if (token > Opt_last_int && token < Opt_last_string) { */
+/* 			dout("got string token %d val %s\n", token, */
+/* 			     argstr[0].from); */
+/* 		} else { */
+/* 			dout("got token %d\n", token); */
+/* 		} */
+/* 		switch (token) { */
+/* 		case Opt_ip: */
+/* 			err = ceph_parse_ips(argstr[0].from, */
+/* 					     argstr[0].to, */
+/* 					     &args->my_addr, */
+/* 					     1, NULL); */
+/* 			if (err < 0) */
+/* 				goto out; */
+/* 			args->flags |= CEPH_OPT_MYIP; */
+/* 			break; */
 
-		case Opt_fsid:
-			err = parse_fsid(argstr[0].from, &args->fsid);
-			if (err == 0)
-				args->flags |= CEPH_OPT_FSID;
-			break;
-		case Opt_snapdirname:
-			kfree(args->snapdir_name);
-			args->snapdir_name = kstrndup(argstr[0].from,
-					      argstr[0].to-argstr[0].from,
-					      GFP_KERNEL);
-			break;
-		case Opt_name:
-			args->name = kstrndup(argstr[0].from,
-					      argstr[0].to-argstr[0].from,
-					      GFP_KERNEL);
-			break;
-		case Opt_secret:
-			args->secret = kstrndup(argstr[0].from,
-						argstr[0].to-argstr[0].from,
-						GFP_KERNEL);
-			break;
+/* 		case Opt_fsid: */
+/* 			err = parse_fsid(argstr[0].from, &args->fsid); */
+/* 			if (err == 0) */
+/* 				args->flags |= CEPH_OPT_FSID; */
+/* 			break; */
+/* 		case Opt_snapdirname: */
+/* 			kfree(args->snapdir_name); */
+/* 			args->snapdir_name = kstrndup(argstr[0].from, */
+/* 					      argstr[0].to-argstr[0].from, */
+/* 					      GFP_KERNEL); */
+/* 			break; */
+/* 		case Opt_name: */
+/* 			args->name = kstrndup(argstr[0].from, */
+/* 					      argstr[0].to-argstr[0].from, */
+/* 					      GFP_KERNEL); */
+/* 			break; */
+/* 		case Opt_secret: */
+/* 			args->secret = kstrndup(argstr[0].from, */
+/* 						argstr[0].to-argstr[0].from, */
+/* 						GFP_KERNEL); */
+/* 			break; */
 
-			/* misc */
-		case Opt_wsize:
-			args->wsize = intval;
-			break;
-		case Opt_rsize:
-			args->rsize = intval;
-			break;
-		case Opt_osdtimeout:
-			args->osd_timeout = intval;
-			break;
-		case Opt_osdkeepalivetimeout:
-			args->osd_keepalive_timeout = intval;
-			break;
-		case Opt_osd_idle_ttl:
-			args->osd_idle_ttl = intval;
-			break;
-		case Opt_mount_timeout:
-			args->mount_timeout = intval;
-			break;
-		case Opt_caps_wanted_delay_min:
-			args->caps_wanted_delay_min = intval;
-			break;
-		case Opt_caps_wanted_delay_max:
-			args->caps_wanted_delay_max = intval;
-			break;
-		case Opt_readdir_max_entries:
-			args->max_readdir = intval;
-			break;
-		case Opt_readdir_max_bytes:
-			args->max_readdir_bytes = intval;
-			break;
-		case Opt_congestion_kb:
-			args->congestion_kb = intval;
-			break;
+/* 			/\* misc *\/ */
+/* 		case Opt_wsize: */
+/* 			args->wsize = intval; */
+/* 			break; */
+/* 		case Opt_rsize: */
+/* 			args->rsize = intval; */
+/* 			break; */
+/* 		case Opt_osdtimeout: */
+/* 			args->osd_timeout = intval; */
+/* 			break; */
+/* 		case Opt_osdkeepalivetimeout: */
+/* 			args->osd_keepalive_timeout = intval; */
+/* 			break; */
+/* 		case Opt_osd_idle_ttl: */
+/* 			args->osd_idle_ttl = intval; */
+/* 			break; */
+/* 		case Opt_mount_timeout: */
+/* 			args->mount_timeout = intval; */
+/* 			break; */
+/* 		case Opt_caps_wanted_delay_min: */
+/* 			args->caps_wanted_delay_min = intval; */
+/* 			break; */
+/* 		case Opt_caps_wanted_delay_max: */
+/* 			args->caps_wanted_delay_max = intval; */
+/* 			break; */
+/* 		case Opt_readdir_max_entries: */
+/* 			args->max_readdir = intval; */
+/* 			break; */
+/* 		case Opt_readdir_max_bytes: */
+/* 			args->max_readdir_bytes = intval; */
+/* 			break; */
+/* 		case Opt_congestion_kb: */
+/* 			args->congestion_kb = intval; */
+/* 			break; */
 
-		case Opt_noshare:
-			args->flags |= CEPH_OPT_NOSHARE;
-			break;
+/* 		case Opt_noshare: */
+/* 			args->flags |= CEPH_OPT_NOSHARE; */
+/* 			break; */
 
-		case Opt_dirstat:
-			args->flags |= CEPH_OPT_DIRSTAT;
-			break;
-		case Opt_nodirstat:
-			args->flags &= ~CEPH_OPT_DIRSTAT;
-			break;
-		case Opt_rbytes:
-			args->flags |= CEPH_OPT_RBYTES;
-			break;
-		case Opt_norbytes:
-			args->flags &= ~CEPH_OPT_RBYTES;
-			break;
-		case Opt_nocrc:
-			args->flags |= CEPH_OPT_NOCRC;
-			break;
-		case Opt_noasyncreaddir:
-			args->flags |= CEPH_OPT_NOASYNCREADDIR;
-			break;
+/* 		case Opt_dirstat: */
+/* 			args->flags |= CEPH_OPT_DIRSTAT; */
+/* 			break; */
+/* 		case Opt_nodirstat: */
+/* 			args->flags &= ~CEPH_OPT_DIRSTAT; */
+/* 			break; */
+/* 		case Opt_rbytes: */
+/* 			args->flags |= CEPH_OPT_RBYTES; */
+/* 			break; */
+/* 		case Opt_norbytes: */
+/* 			args->flags &= ~CEPH_OPT_RBYTES; */
+/* 			break; */
+/* 		case Opt_nocrc: */
+/* 			args->flags |= CEPH_OPT_NOCRC; */
+/* 			break; */
+/* 		case Opt_noasyncreaddir: */
+/* 			args->flags |= CEPH_OPT_NOASYNCREADDIR; */
+/* 			break; */
 
-		default:
-			BUG_ON(token);
-		}
-	}
-	return args;
+/* 		default: */
+/* 			BUG_ON(token); */
+/* 		} */
+/* 	} */
+/* 	return args; */
 
-out:
-	kfree(args->mon_addr);
-	kfree(args);
-	return ERR_PTR(err);
-}
+/* out: */
+/* 	kfree(args->mon_addr); */
+/* 	kfree(args); */
+/* 	return ERR_PTR(err); */
+/* } */
 
 static void destroy_mount_args(struct ceph_mount_args *args)
 {
@@ -620,83 +620,83 @@ static void destroy_mount_args(struct ceph_mount_args *args)
 /*
  * create a fresh client instance
  */
-static struct ceph_client *ceph_create_client(struct ceph_mount_args *args)
-{
-	struct ceph_client *client;
-	int err = -ENOMEM;
+/* static struct ceph_client *ceph_create_client(struct ceph_mount_args *args) */
+/* { */
+/* 	struct ceph_client *client; */
+/* 	int err = -ENOMEM; */
 
-	client = kzalloc(sizeof(*client), GFP_KERNEL);
-	if (client == NULL)
-		return ERR_PTR(-ENOMEM);
+/* 	client = kzalloc(sizeof(*client), GFP_KERNEL); */
+/* 	if (client == NULL) */
+/* 		return ERR_PTR(-ENOMEM); */
 
-	mutex_init(&client->mount_mutex);
+/* 	mutex_init(&client->mount_mutex); */
 
-	init_waitqueue_head(&client->auth_wq);
+/* 	init_waitqueue_head(&client->auth_wq); */
 
-	client->sb = NULL;
-	client->mount_state = CEPH_MOUNT_MOUNTING;
-	client->mount_args = args;
+/* 	client->sb = NULL; */
+/* 	client->mount_state = CEPH_MOUNT_MOUNTING; */
+/* 	client->mount_args = args; */
 
-	client->msgr = NULL;
+/* 	client->msgr = NULL; */
 
-	client->auth_err = 0;
-	atomic_long_set(&client->writeback_count, 0);
+/* 	client->auth_err = 0; */
+/* 	atomic_long_set(&client->writeback_count, 0); */
 
-	err = bdi_init(&client->backing_dev_info);
-	if (err < 0)
-		goto fail;
+/* 	err = bdi_init(&client->backing_dev_info); */
+/* 	if (err < 0) */
+/* 		goto fail; */
 
-	err = -ENOMEM;
-	client->wb_wq = create_workqueue("ceph-writeback");
-	if (client->wb_wq == NULL)
-		goto fail_bdi;
-	client->pg_inv_wq = create_singlethread_workqueue("ceph-pg-invalid");
-	if (client->pg_inv_wq == NULL)
-		goto fail_wb_wq;
-	client->trunc_wq = create_singlethread_workqueue("ceph-trunc");
-	if (client->trunc_wq == NULL)
-		goto fail_pg_inv_wq;
+/* 	err = -ENOMEM; */
+/* 	client->wb_wq = create_workqueue("ceph-writeback"); */
+/* 	if (client->wb_wq == NULL) */
+/* 		goto fail_bdi; */
+/* 	client->pg_inv_wq = create_singlethread_workqueue("ceph-pg-invalid"); */
+/* 	if (client->pg_inv_wq == NULL) */
+/* 		goto fail_wb_wq; */
+/* 	client->trunc_wq = create_singlethread_workqueue("ceph-trunc"); */
+/* 	if (client->trunc_wq == NULL) */
+/* 		goto fail_pg_inv_wq; */
 
-	/* set up mempools */
-	err = -ENOMEM;
-	client->wb_pagevec_pool = mempool_create_kmalloc_pool(10,
-			      client->mount_args->wsize >> PAGE_CACHE_SHIFT);
-	if (!client->wb_pagevec_pool)
-		goto fail_trunc_wq;
+/* 	/\* set up mempools *\/ */
+/* 	err = -ENOMEM; */
+/* 	client->wb_pagevec_pool = mempool_create_kmalloc_pool(10, */
+/* 			      client->mount_args->wsize >> PAGE_CACHE_SHIFT); */
+/* 	if (!client->wb_pagevec_pool) */
+/* 		goto fail_trunc_wq; */
 
-	/* caps */
-	client->min_caps = args->max_readdir;
+/* 	/\* caps *\/ */
+/* 	client->min_caps = args->max_readdir; */
 
-	/* subsystems */
-	err = ceph_monc_init(&client->monc, client);
-	if (err < 0)
-		goto fail_mempool;
-	err = ceph_osdc_init(&client->osdc, client);
-	if (err < 0)
-		goto fail_monc;
-	err = ceph_mdsc_init(&client->mdsc, client);
-	if (err < 0)
-		goto fail_osdc;
-	return client;
+/* 	/\* subsystems *\/ */
+/* 	err = ceph_monc_init(&client->monc, client); */
+/* 	if (err < 0) */
+/* 		goto fail_mempool; */
+/* 	err = ceph_osdc_init(&client->osdc, client); */
+/* 	if (err < 0) */
+/* 		goto fail_monc; */
+/* 	err = ceph_mdsc_init(&client->mdsc, client); */
+/* 	if (err < 0) */
+/* 		goto fail_osdc; */
+/* 	return client; */
 
-fail_osdc:
-	ceph_osdc_stop(&client->osdc);
-fail_monc:
-	ceph_monc_stop(&client->monc);
-fail_mempool:
-	mempool_destroy(client->wb_pagevec_pool);
-fail_trunc_wq:
-	destroy_workqueue(client->trunc_wq);
-fail_pg_inv_wq:
-	destroy_workqueue(client->pg_inv_wq);
-fail_wb_wq:
-	destroy_workqueue(client->wb_wq);
-fail_bdi:
-	bdi_destroy(&client->backing_dev_info);
-fail:
-	kfree(client);
-	return ERR_PTR(err);
-}
+/* fail_osdc: */
+/* 	ceph_osdc_stop(&client->osdc); */
+/* fail_monc: */
+/* 	ceph_monc_stop(&client->monc); */
+/* fail_mempool: */
+/* 	mempool_destroy(client->wb_pagevec_pool); */
+/* fail_trunc_wq: */
+/* 	destroy_workqueue(client->trunc_wq); */
+/* fail_pg_inv_wq: */
+/* 	destroy_workqueue(client->pg_inv_wq); */
+/* fail_wb_wq: */
+/* 	destroy_workqueue(client->wb_wq); */
+/* fail_bdi: */
+/* 	bdi_destroy(&client->backing_dev_info); */
+/* fail: */
+/* 	kfree(client); */
+/* 	return ERR_PTR(err); */
+/* } */
 
 static void ceph_destroy_client(struct ceph_client *client)
 {
@@ -756,289 +756,290 @@ int ceph_check_fsid(struct ceph_client *client, struct ceph_fsid *fsid)
 /*
  * true if we have the mon map (and have thus joined the cluster)
  */
-static int have_mon_and_osd_map(struct ceph_client *client)
-{
-	return client->monc.monmap && client->monc.monmap->epoch &&
-	       client->osdc.osdmap && client->osdc.osdmap->epoch;
-}
+/* static int have_mon_and_osd_map(struct ceph_client *client) */
+/* { */
+/* 	return client->monc.monmap && client->monc.monmap->epoch && */
+/* 	       client->osdc.osdmap && client->osdc.osdmap->epoch; */
+/* } */
 
 /*
  * Bootstrap mount by opening the root directory.  Note the mount
  * @started time from caller, and time out if this takes too long.
  */
-static struct dentry *open_root_dentry(struct ceph_client *client,
-				       const char *path,
-				       unsigned long started)
-{
-	struct ceph_mds_client *mdsc = &client->mdsc;
-	struct ceph_mds_request *req = NULL;
-	int err;
-	struct dentry *root;
+/* static struct dentry *open_root_dentry(struct ceph_client *client, */
+/* 				       const char *path, */
+/* 				       unsigned long started) */
+/* { */
+/* 	struct ceph_mds_client *mdsc = &client->mdsc; */
+/* 	struct ceph_mds_request *req = NULL; */
+/* 	int err; */
+/* 	struct dentry *root; */
 
-	/* open dir */
-	dout("open_root_inode opening '%s'\n", path);
-	req = ceph_mdsc_create_request(mdsc, CEPH_MDS_OP_GETATTR, USE_ANY_MDS);
-	if (IS_ERR(req))
-		return ERR_CAST(req);
-	req->r_path1 = kstrdup(path, GFP_NOFS);
-	req->r_ino1.ino = CEPH_INO_ROOT;
-	req->r_ino1.snap = CEPH_NOSNAP;
-	req->r_started = started;
-	req->r_timeout = client->mount_args->mount_timeout * HZ;
-	req->r_args.getattr.mask = cpu_to_le32(CEPH_STAT_CAP_INODE);
-	req->r_num_caps = 2;
-	err = ceph_mdsc_do_request(mdsc, NULL, req);
-	if (err == 0) {
-		dout("open_root_inode success\n");
-		if (ceph_ino(req->r_target_inode) == CEPH_INO_ROOT &&
-		    client->sb->s_root == NULL)
-			root = d_alloc_root(req->r_target_inode);
-		else
-			root = d_obtain_alias(req->r_target_inode);
-		req->r_target_inode = NULL;
-		dout("open_root_inode success, root dentry is %p\n", root);
-	} else {
-		root = ERR_PTR(err);
-	}
-	ceph_mdsc_put_request(req);
-	return root;
-}
+/* 	/\* open dir *\/ */
+/* 	dout("open_root_inode opening '%s'\n", path); */
+/* 	req = ceph_mdsc_create_request(mdsc, CEPH_MDS_OP_GETATTR, USE_ANY_MDS); */
+/* 	if (IS_ERR(req)) */
+/* 		return ERR_CAST(req); */
+/* 	req->r_path1 = kstrdup(path, GFP_NOFS); */
+/* 	req->r_ino1.ino = CEPH_INO_ROOT; */
+/* 	req->r_ino1.snap = CEPH_NOSNAP; */
+/* 	req->r_started = started; */
+/* 	req->r_timeout = client->mount_args->mount_timeout * HZ; */
+/* 	req->r_args.getattr.mask = cpu_to_le32(CEPH_STAT_CAP_INODE); */
+/* 	req->r_num_caps = 2; */
+/* 	err = ceph_mdsc_do_request(mdsc, NULL, req); */
+/* 	if (err == 0) { */
+/* 		dout("open_root_inode success\n"); */
+/* 		if (ceph_ino(req->r_target_inode) == CEPH_INO_ROOT && */
+/* 		    client->sb->s_root == NULL) */
+/* 			root = d_alloc_root(req->r_target_inode); */
+/* 		else */
+/* 			root = d_obtain_alias(req->r_target_inode); */
+/* 		req->r_target_inode = NULL; */
+/* 		dout("open_root_inode success, root dentry is %p\n", root); */
+/* 	} else { */
+/* 		root = ERR_PTR(err); */
+/* 	} */
+/* 	ceph_mdsc_put_request(req); */
+/* 	return root; */
+/* } */
 
 /*
  * mount: join the ceph cluster, and open root directory.
  */
-static int ceph_mount(struct ceph_client *client, struct vfsmount *mnt,
-		      const char *path)
-{
-	struct ceph_entity_addr *myaddr = NULL;
-	int err;
-	unsigned long timeout = client->mount_args->mount_timeout * HZ;
-	unsigned long started = jiffies;  /* note the start time */
-	struct dentry *root;
+/* static int ceph_mount(struct ceph_client *client, struct vfsmount *mnt, */
+/* 		      const char *path) */
+/* { */
+/* 	struct ceph_entity_addr *myaddr = NULL; */
+/* 	int err; */
+/* 	unsigned long timeout = client->mount_args->mount_timeout * HZ; */
+/* 	unsigned long started = jiffies;  /\* note the start time *\/ */
+/* 	struct dentry *root; */
 
-	dout("mount start\n");
-	mutex_lock(&client->mount_mutex);
+/* 	dout("mount start\n"); */
+/* 	mutex_lock(&client->mount_mutex); */
 
-	/* initialize the messenger */
-	if (client->msgr == NULL) {
-		if (ceph_test_opt(client, MYIP))
-			myaddr = &client->mount_args->my_addr;
-		client->msgr = ceph_messenger_create(myaddr);
-		if (IS_ERR(client->msgr)) {
-			err = PTR_ERR(client->msgr);
-			client->msgr = NULL;
-			goto out;
-		}
-		client->msgr->nocrc = ceph_test_opt(client, NOCRC);
-	}
+/* 	/\* initialize the messenger *\/ */
+/* 	if (client->msgr == NULL) { */
+/* 		if (ceph_test_opt(client, MYIP)) */
+/* 			myaddr = &client->mount_args->my_addr; */
+/* 		client->msgr = ceph_messenger_create(myaddr); */
+/* 		if (IS_ERR(client->msgr)) { */
+/* 			err = PTR_ERR(client->msgr); */
+/* 			client->msgr = NULL; */
+/* 			goto out; */
+/* 		} */
+/* 		client->msgr->nocrc = ceph_test_opt(client, NOCRC); */
+/* 	} */
 
-	/* open session, and wait for mon, mds, and osd maps */
-	err = ceph_monc_open_session(&client->monc);
-	if (err < 0)
-		goto out;
+/* 	/\* open session, and wait for mon, mds, and osd maps *\/ */
+/* 	err = ceph_monc_open_session(&client->monc); */
+/* 	if (err < 0) */
+/* 		goto out; */
 
-	while (!have_mon_and_osd_map(client)) {
-		err = -EIO;
-		if (timeout && time_after_eq(jiffies, started + timeout))
-			goto out;
+/* 	while (!have_mon_and_osd_map(client)) { */
+/* 		err = -EIO; */
+/* 		if (timeout && time_after_eq(jiffies, started + timeout)) */
+/* 			goto out; */
 
-		/* wait */
-		dout("mount waiting for mon_map\n");
-		err = wait_event_interruptible_timeout(client->auth_wq,
-		       have_mon_and_osd_map(client) || (client->auth_err < 0),
-		       timeout);
-		if (err == -EINTR || err == -ERESTARTSYS)
-			goto out;
-		if (client->auth_err < 0) {
-			err = client->auth_err;
-			goto out;
-		}
-	}
+/* 		/\* wait *\/ */
+/* 		dout("mount waiting for mon_map\n"); */
+/* 		err = wait_event_interruptible_timeout(client->auth_wq, */
+/* 		       have_mon_and_osd_map(client) || (client->auth_err < 0), */
+/* 		       timeout); */
+/* 		if (err == -EINTR || err == -ERESTARTSYS) */
+/* 			goto out; */
+/* 		if (client->auth_err < 0) { */
+/* 			err = client->auth_err; */
+/* 			goto out; */
+/* 		} */
+/* 	} */
 
-	dout("mount opening root\n");
-	root = open_root_dentry(client, "", started);
-	if (IS_ERR(root)) {
-		err = PTR_ERR(root);
-		goto out;
-	}
-	if (client->sb->s_root)
-		dput(root);
-	else
-		client->sb->s_root = root;
+/* 	dout("mount opening root\n"); */
+/* 	root = open_root_dentry(client, "", started); */
+/* 	if (IS_ERR(root)) { */
+/* 		err = PTR_ERR(root); */
+/* 		goto out; */
+/* 	} */
+/* 	if (client->sb->s_root) */
+/* 		dput(root); */
+/* 	else */
+/* 		client->sb->s_root = root; */
 
-	if (path[0] == 0) {
-		dget(root);
-	} else {
-		dout("mount opening base mountpoint\n");
-		root = open_root_dentry(client, path, started);
-		if (IS_ERR(root)) {
-			err = PTR_ERR(root);
-			dput(client->sb->s_root);
-			client->sb->s_root = NULL;
-			goto out;
-		}
-	}
+/* 	if (path[0] == 0) { */
+/* 		dget(root); */
+/* 	} else { */
+/* 		dout("mount opening base mountpoint\n"); */
+/* 		root = open_root_dentry(client, path, started); */
+/* 		if (IS_ERR(root)) { */
+/* 			err = PTR_ERR(root); */
+/* 			dput(client->sb->s_root); */
+/* 			client->sb->s_root = NULL; */
+/* 			goto out; */
+/* 		} */
+/* 	} */
 
-	mnt->mnt_root = root;
-	mnt->mnt_sb = client->sb;
+/* 	mnt->mnt_root = root; */
+/* 	mnt->mnt_sb = client->sb; */
 
-	client->mount_state = CEPH_MOUNT_MOUNTED;
-	dout("mount success\n");
-	err = 0;
+/* 	client->mount_state = CEPH_MOUNT_MOUNTED; */
+/* 	dout("mount success\n"); */
+/* 	err = 0; */
 
-out:
-	mutex_unlock(&client->mount_mutex);
-	return err;
-}
+/* out: */
+/* 	mutex_unlock(&client->mount_mutex); */
+/* 	return err; */
+/* } */
 
-static int ceph_set_super(struct super_block *s, void *data)
-{
-	struct ceph_client *client = data;
-	int ret;
+/* static int ceph_set_super(struct super_block *s, void *data) */
+/* { */
+/* 	struct ceph_client *client = data; */
+/* 	int ret; */
 
-	dout("set_super %p data %p\n", s, data);
+/* 	dout("set_super %p data %p\n", s, data); */
 
-	s->s_flags = client->mount_args->sb_flags;
-	s->s_maxbytes = 1ULL << 40;  /* temp value until we get mdsmap */
+/* 	s->s_flags = client->mount_args->sb_flags; */
+/* 	s->s_maxbytes = 1ULL << 40;  /\* temp value until we get mdsmap *\/ */
 
-	s->s_fs_info = client;
-	client->sb = s;
+/* 	s->s_fs_info = client; */
+/* 	client->sb = s; */
 
-	s->s_op = &ceph_super_ops;
-	s->s_export_op = &ceph_export_ops;
+/* 	s->s_op = &ceph_super_ops; */
+/* 	s->s_export_op = &ceph_export_ops; */
 
-	s->s_time_gran = 1000;  /* 1000 ns == 1 us */
+/* 	s->s_time_gran = 1000;  /\* 1000 ns == 1 us *\/ */
 
-	ret = set_anon_super(s, NULL);  /* what is that second arg for? */
-	if (ret != 0)
-		goto fail;
+/* 	ret = set_anon_super(s, NULL);  /\* what is that second arg for? *\/ */
+/* 	if (ret != 0) */
+/* 		goto fail; */
 
-	return ret;
+/* 	return ret; */
 
-fail:
-	s->s_fs_info = NULL;
-	client->sb = NULL;
-	return ret;
-}
+/* fail: */
+/* 	s->s_fs_info = NULL; */
+/* 	client->sb = NULL; */
+/* 	return ret; */
+/* } */
 
 /*
  * share superblock if same fs AND options
  */
-static int ceph_compare_super(struct super_block *sb, void *data)
-{
-	struct ceph_client *new = data;
-	struct ceph_mount_args *args = new->mount_args;
-	struct ceph_client *other = ceph_sb_to_client(sb);
-	int i;
+/* static int ceph_compare_super(struct super_block *sb, void *data) */
+/* { */
+/* 	struct ceph_client *new = data; */
+/* 	struct ceph_mount_args *args = new->mount_args; */
+/* 	struct ceph_client *other = ceph_sb_to_client(sb); */
+/* 	int i; */
 
-	dout("ceph_compare_super %p\n", sb);
-	if (args->flags & CEPH_OPT_FSID) {
-		if (ceph_fsid_compare(&args->fsid, &other->fsid)) {
-			dout("fsid doesn't match\n");
-			return 0;
-		}
-	} else {
-		/* do we share (a) monitor? */
-		for (i = 0; i < new->monc.monmap->num_mon; i++)
-			if (ceph_monmap_contains(other->monc.monmap,
-					 &new->monc.monmap->mon_inst[i].addr))
-				break;
-		if (i == new->monc.monmap->num_mon) {
-			dout("mon ip not part of monmap\n");
-			return 0;
-		}
-		dout("mon ip matches existing sb %p\n", sb);
-	}
-	if (args->sb_flags != other->mount_args->sb_flags) {
-		dout("flags differ\n");
-		return 0;
-	}
-	return 1;
-}
+/* 	dout("ceph_compare_super %p\n", sb); */
+/* 	if (args->flags & CEPH_OPT_FSID) { */
+/* 		if (ceph_fsid_compare(&args->fsid, &other->fsid)) { */
+/* 			dout("fsid doesn't match\n"); */
+/* 			return 0; */
+/* 		} */
+/* 	} else { */
+/* 		/\* do we share (a) monitor? *\/ */
+/* 		for (i = 0; i < new->monc.monmap->num_mon; i++) */
+/* 			if (ceph_monmap_contains(other->monc.monmap, */
+/* 					 &new->monc.monmap->mon_inst[i].addr)) */
+/* 				break; */
+/* 		if (i == new->monc.monmap->num_mon) { */
+/* 			dout("mon ip not part of monmap\n"); */
+/* 			return 0; */
+/* 		} */
+/* 		dout("mon ip matches existing sb %p\n", sb); */
+/* 	} */
+/* 	if (args->sb_flags != other->mount_args->sb_flags) { */
+/* 		dout("flags differ\n"); */
+/* 		return 0; */
+/* 	} */
+/* 	return 1; */
+/* } */
 
 /*
  * construct our own bdi so we can control readahead, etc.
  */
-static atomic_long_t bdi_seq = ATOMIC_LONG_INIT(0);
+//static atomic_long_t bdi_seq = ATOMIC_LONG_INIT(0);
 
-static int ceph_register_bdi(struct super_block *sb, struct ceph_client *client)
-{
-	int err;
+/* static int ceph_register_bdi(struct super_block *sb, struct ceph_client *client) */
+/* { */
+/* 	int err; */
 
-	/* set ra_pages based on rsize mount option? */
-	if (client->mount_args->rsize >= PAGE_CACHE_SIZE)
-		client->backing_dev_info.ra_pages =
-			(client->mount_args->rsize + PAGE_CACHE_SIZE - 1)
-			>> PAGE_SHIFT;
-	err = bdi_register(&client->backing_dev_info, NULL, "ceph-%d",
-			   atomic_long_inc_return(&bdi_seq));
-	if (!err)
-		sb->s_bdi = &client->backing_dev_info;
-	return err;
-}
+/* 	/\* set ra_pages based on rsize mount option? *\/ */
+/* 	if (client->mount_args->rsize >= PAGE_CACHE_SIZE) */
+/* 		client->backing_dev_info.ra_pages = */
+/* 			(client->mount_args->rsize + PAGE_CACHE_SIZE - 1) */
+/* 			>> PAGE_SHIFT; */
+/* 	err = bdi_register(&client->backing_dev_info, NULL, "ceph-%d", */
+/* 			   atomic_long_inc_return(&bdi_seq)); */
+/* 	if (!err) */
+/* 		sb->s_bdi = &client->backing_dev_info; */
+/* 	return err; */
+/* } */
 
-static int ceph_get_sb(struct file_system_type *fs_type,
-		       int flags, const char *dev_name, void *data,
-		       struct vfsmount *mnt)
-{
-	struct super_block *sb;
-	struct ceph_client *client;
-	int err;
-	int (*compare_super)(struct super_block *, void *) = ceph_compare_super;
-	const char *path = NULL;
-	struct ceph_mount_args *args;
+/* /\* */
+/* static int ceph_get_sb(struct file_system_type *fs_type, */
+/* 		       int flags, const char *dev_name, void *data, */
+/* 		       struct vfsmount *mnt) */
+/* { */
+/* 	struct super_block *sb; */
+/* 	struct ceph_client *client; */
+/* 	int err; */
+/* 	int (*compare_super)(struct super_block *, void *) = ceph_compare_super; */
+/* 	const char *path = NULL; */
+/* 	struct ceph_mount_args *args; */
 
-	dout("ceph_get_sb\n");
-	args = parse_mount_args(flags, data, dev_name, &path);
-	if (IS_ERR(args)) {
-		err = PTR_ERR(args);
-		goto out_final;
-	}
+/* 	dout("ceph_get_sb\n"); */
+/* 	args = parse_mount_args(flags, data, dev_name, &path); */
+/* 	if (IS_ERR(args)) { */
+/* 		err = PTR_ERR(args); */
+/* 		goto out_final; */
+/* 	} */
 
-	/* create client (which we may/may not use) */
-	client = ceph_create_client(args);
-	if (IS_ERR(client)) {
-		err = PTR_ERR(client);
-		goto out_final;
-	}
+/* 	/\* create client (which we may/may not use) *\/ */
+/* 	client = ceph_create_client(args); */
+/* 	if (IS_ERR(client)) { */
+/* 		err = PTR_ERR(client); */
+/* 		goto out_final; */
+/* 	} */
 
-	if (client->mount_args->flags & CEPH_OPT_NOSHARE)
-		compare_super = NULL;
-	sb = sget(fs_type, compare_super, ceph_set_super, client);
-	if (IS_ERR(sb)) {
-		err = PTR_ERR(sb);
-		goto out;
-	}
+/* 	if (client->mount_args->flags & CEPH_OPT_NOSHARE) */
+/* 		compare_super = NULL; */
+/* 	sb = sget(fs_type, compare_super, ceph_set_super, client); */
+/* 	if (IS_ERR(sb)) { */
+/* 		err = PTR_ERR(sb); */
+/* 		goto out; */
+/* 	} */
 
-	if (ceph_sb_to_client(sb) != client) {
-		ceph_destroy_client(client);
-		client = ceph_sb_to_client(sb);
-		dout("get_sb got existing client %p\n", client);
-	} else {
-		dout("get_sb using new client %p\n", client);
-		err = ceph_register_bdi(sb, client);
-		if (err < 0)
-			goto out_splat;
-	}
+/* 	if (ceph_sb_to_client(sb) != client) { */
+/* 		ceph_destroy_client(client); */
+/* 		client = ceph_sb_to_client(sb); */
+/* 		dout("get_sb got existing client %p\n", client); */
+/* 	} else { */
+/* 		dout("get_sb using new client %p\n", client); */
+/* 		err = ceph_register_bdi(sb, client); */
+/* 		if (err < 0) */
+/* 			goto out_splat; */
+/* 	} */
 
-	err = ceph_mount(client, mnt, path);
-	if (err < 0)
-		goto out_splat;
-	dout("root %p inode %p ino %llx.%llx\n", mnt->mnt_root,
-	     mnt->mnt_root->d_inode, ceph_vinop(mnt->mnt_root->d_inode));
-	return 0;
+/* 	err = ceph_mount(client, mnt, path); */
+/* 	if (err < 0) */
+/* 		goto out_splat; */
+/* 	dout("root %p inode %p ino %llx.%llx\n", mnt->mnt_root, */
+/* 	     mnt->mnt_root->d_inode, ceph_vinop(mnt->mnt_root->d_inode)); */
+/* 	return 0; */
 
-out_splat:
-	ceph_mdsc_close_sessions(&client->mdsc);
-	deactivate_locked_super(sb);
-	goto out_final;
+/* out_splat: */
+/* 	ceph_mdsc_close_sessions(&client->mdsc); */
+/* 	deactivate_locked_super(sb); */
+/* 	goto out_final; */
 
-out:
-	ceph_destroy_client(client);
-out_final:
-	dout("ceph_get_sb fail %d\n", err);
-	return err;
-}
+/* out: */
+/* 	ceph_destroy_client(client); */
+/* out_final: */
+/* 	dout("ceph_get_sb fail %d\n", err); */
+/* 	return err; */
+/* } */
 
 static void ceph_kill_sb(struct super_block *s)
 {
@@ -1052,7 +1053,7 @@ static void ceph_kill_sb(struct super_block *s)
 static struct file_system_type ceph_fs_type = {
 	.owner		= THIS_MODULE,
 	.name		= "ceph",
-	.get_sb		= ceph_get_sb,
+	//.get_sb		= ceph_get_sb,
 	.kill_sb	= ceph_kill_sb,
 	.fs_flags	= FS_RENAME_DOES_D_MOVE,
 };

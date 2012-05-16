@@ -976,7 +976,7 @@ int ceph_calc_object_layout(struct ceph_object_layout *ol,
 			    struct ceph_file_layout *fl,
 			    struct ceph_osdmap *osdmap)
 {
-	unsigned num, num_mask;
+  //	unsigned num, num_mask;
 	struct ceph_pg pgid;
 	s32 preferred = (s32)le32_to_cpu(fl->fl_pg_preferred);
 	int poolid = le32_to_cpu(fl->fl_pg_pool);
@@ -991,11 +991,11 @@ int ceph_calc_object_layout(struct ceph_object_layout *ol,
 	ps = ceph_str_hash(pool->v.object_hash, oid, strlen(oid));
 	if (preferred >= 0) {
 		ps += preferred;
-		num = le32_to_cpu(pool->v.lpg_num);
-		num_mask = pool->lpg_num_mask;
+                //	num = le32_to_cpu(pool->v.lpg_num);
+                //	num_mask = pool->lpg_num_mask;
 	} else {
-		num = le32_to_cpu(pool->v.pg_num);
-		num_mask = pool->pg_num_mask;
+          //num = le32_to_cpu(pool->v.pg_num);
+          //	num_mask = pool->pg_num_mask;
 	}
 
 	pgid.ps = cpu_to_le16(ps);

@@ -2537,7 +2537,7 @@ static void nilfs_segctor_thread_construct(struct nilfs_sc_info *sci, int mode)
 static void nilfs_segctor_do_immediate_flush(struct nilfs_sc_info *sci)
 {
 	int mode = 0;
-	int err;
+	//int err;
 
 	spin_lock(&sci->sc_state_lock);
 	mode = (sci->sc_flush_request & FLUSH_DAT_BIT) ?
@@ -2545,7 +2545,8 @@ static void nilfs_segctor_do_immediate_flush(struct nilfs_sc_info *sci)
 	spin_unlock(&sci->sc_state_lock);
 
 	if (mode) {
-		err = nilfs_segctor_do_construct(sci, mode);
+          //TODO:	err = 
+          nilfs_segctor_do_construct(sci, mode);
 
 		spin_lock(&sci->sc_state_lock);
 		sci->sc_flush_request &= (mode == SC_FLUSH_FILE) ?

@@ -275,11 +275,11 @@ static int __remove_xattr(struct ceph_inode_info *ci,
 static int __remove_xattr_by_name(struct ceph_inode_info *ci,
 			   const char *name)
 {
-	struct rb_node **p;
+  //	struct rb_node **p;
 	struct ceph_inode_xattr *xattr;
 	int err;
 
-	p = &ci->i_xattrs.index.rb_node;
+	//p =         &ci->i_xattrs.index.rb_node;
 	xattr = __get_xattr(ci, name);
 	err = __remove_xattr(ci, xattr);
 	return err;
