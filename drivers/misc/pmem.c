@@ -505,7 +505,7 @@ static int pmem_unmap_pfn_range(int id, struct vm_area_struct *vma,
 
 	BUG_ON(!PMEM_IS_PAGE_ALIGNED(len));
 
-	garbage_pages = len >> PAGE_SHIFT;
+	//garbage_pages = len >> PAGE_SHIFT;
 	zap_page_range(vma, vma->vm_start + offset, len, NULL);
 	pmem_map_garbage(id, vma, data, offset, len);
 	return 0;
@@ -1230,7 +1230,7 @@ static struct miscdevice pmem_dev = {
 	.name = "pmem",
 	.fops = &pmem_fops,
 };
-#endi
+#endif
 
 
 

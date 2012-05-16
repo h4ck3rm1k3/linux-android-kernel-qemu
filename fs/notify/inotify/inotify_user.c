@@ -543,7 +543,7 @@ void inotify_ignored_and_remove_idr(struct fsnotify_mark *fsn_mark,
 		if (IS_ERR(notify_event))
                   ret = PTR_ERR(notify_event);
 		else
-			fsnotify_put_event(notify_event);
+                  fsnotify_put_event(notify_event);
 		inotify_free_event_priv(fsn_event_priv);
 	}
 

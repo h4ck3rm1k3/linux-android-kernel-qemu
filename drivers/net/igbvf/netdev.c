@@ -1356,7 +1356,7 @@ static void igbvf_configure_rx(struct igbvf_adapter *adapter)
 	struct e1000_hw *hw = &adapter->hw;
 	struct igbvf_ring *rx_ring = adapter->rx_ring;
 	u64 rdba;
-	//u32 rdlen, rxdctl;
+	//u32 rdlen; // TODO the compiler, rxdctl;
         u32 rxdctl;
 
 	/* disable receives */
@@ -1364,7 +1364,7 @@ static void igbvf_configure_rx(struct igbvf_adapter *adapter)
 	ew32(RXDCTL(0), rxdctl & ~E1000_RXDCTL_QUEUE_ENABLE);
 	msleep(10);
 
-	rdlen = rx_ring->count * sizeof(union e1000_adv_rx_desc);
+	//rdlen = rx_ring->count * sizeof(union e1000_adv_rx_desc);
 
 	/*
 	 * Setup the HW Rx Head and Tail Descriptor Pointers and
@@ -1865,11 +1865,11 @@ static void igbvf_watchdog_task(struct work_struct *work)
 			adapter->tx_timeout_factor = 1;
 			switch (adapter->link_speed) {
 			case SPEED_10:
-				txb2b = 0;
+                          //txb2b = 0;
 				adapter->tx_timeout_factor = 16;
 				break;
 			case SPEED_100:
-				txb2b = 0;
+                          //txb2b = 0;
 				/* maybe add some timeout factor ? */
 				break;
 			}
