@@ -22,6 +22,7 @@
 #include <linux/types.h>
 #include <linux/module.h>
 #include <linux/pm.h>
+#include <linux/kdev_t.h>
 #include <asm/atomic.h>
 #include <asm/device.h>
 
@@ -34,6 +35,8 @@ struct class_private;
 struct bus_type;
 struct bus_type_private;
 struct device_node;
+
+//extern dev_t MKDEV(int major, int minor);
 
 struct bus_attribute {
 	struct attribute	attr;

@@ -97,6 +97,7 @@ static ssize_t enable_store(
 
 static DEVICE_ATTR(enable, S_IRUGO | S_IWUSR, enable_show, enable_store);
 
+
 void usb_function_set_enabled(struct usb_function *f, int enabled)
 {
 	f->disabled = !enabled;

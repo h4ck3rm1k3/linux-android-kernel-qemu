@@ -28,9 +28,17 @@
 #include <asm/cacheflush.h>
 
 // forward copied from outside
-extern void dmac_flush_range(const void *, const void *);
+void dmac_flush_range(const void * start, const void * end)
+{
+  // TODO this is defined only for arm, #define dmac_flush_range		__glue(_CACHE,_dma_flush_range),rch/arm/include/asm/cacheflush.h and that _dma_flush_range is asm
+}
 // derived
-extern void * ioremap_cached(const void *data, size_t size);
+void * ioremap_cached(const void *data, size_t size)
+{
+  // TODO
+  // arch/arm/include/asm/io.h:252:#define ioremap_cached(cookie,size)	__arch_ioremap((cookie), (size), MT_DEVICE_CACHED)
+  // 
+}
 
 
 #define PMEM_MAX_DEVICES 10
