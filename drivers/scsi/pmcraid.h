@@ -598,7 +598,7 @@ struct pmcraid_cmd {
 		 * auto sense data
 		 */
 		struct  {
-			u8 *sense_buffer;
+                  u8 * _sense_buffer;
 			dma_addr_t sense_buffer_dma;
 		};
 	};
